@@ -6,7 +6,7 @@ import Loading from './Loading';
 const PrivateRoute = () => {
     const { firebaseAuth: { loading, user } } = useAuth();
     const location = useLocation();
-
+    console.log(location, "of private route");
     if (loading) {
         return <Loading />
     }

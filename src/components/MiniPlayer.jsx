@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ReactPlayer from 'react-player/youtube';
-import { useLocation } from 'react-router-dom';
 import classes from "../styles/MiniPlayer.module.css";
-const MiniPlayer = ({ videoID, videoTitle }) => {
+const MiniPlayer = ({ videoID, title}) => {
     const videoUrl = `https://www.youtube.com/watch?v=${videoID}`
     const playerRef = useRef();
     const [status, setStatus] = useState(false);
@@ -22,7 +21,7 @@ const MiniPlayer = ({ videoID, videoTitle }) => {
             <span className={`material-icons-outlined ${classes.open}`}> play_circle_filled </span>
             <span className={`material-icons-outlined ${classes.close}`} onClick={togglePlayer}> close </span>
             <ReactPlayer className={classes.player} url={videoUrl} playing={status} controls height="168px" width="300px" />
-            <p>{videoTitle} </p>
+            <p>{title ? title : JSON.parse(localStorage.getItem("video_title")) } </p>
         </div>
     )
 }

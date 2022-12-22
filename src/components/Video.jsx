@@ -4,7 +4,7 @@ import classes from "../styles/Video.module.css";
 
 const Video = ({ title, youtubeId, noq }) => {
     return (
-        <NavLink to={noq > 0 ? `/quiz/${youtubeId}`: "/"} state={{title: title}}>
+        <NavLink to={noq > 0 ? `/quiz/${youtubeId}` : "/"} state={{title: title}}>
             <div className={classes.video}>
                 <img src={`http://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`} alt={title} />
                 <p> {title}</p>

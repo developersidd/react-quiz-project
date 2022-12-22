@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import loginSvg from "../../assets/images/login.svg";
 import useAuth from '../../Hooks/useAuth';
 import classes from "../../styles/Login.module.css";
@@ -9,10 +9,13 @@ import GoogleSignIn from '../GoogleSignin';
 import Illustration from '../Illustration';
 import SetPageTitle from '../SetPageTitle';
 import TextInput from '../TextInput';
+
 const Login = () => {
     const { firebaseAuth: { loginUser, firebaseError, setLoading, setFirebaseError, user } } = useAuth();
     const [data, setData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
+    const location = useLocation();
+    console.log("location of Login", location)
     const { email, password } = data;
     const handleInputChange = (e) => {
         const target = e.target;
@@ -62,7 +65,8 @@ const Login = () => {
                     {firebaseError && <p className='error'> {firebaseError} </p>}
 
                     <p style={{ textAlign: "center", paddingTop: "25px", fontWeight: "bold", fontSize: "13px" }}>Or Sign up with </p>
-                    <GoogleSignIn />
+                    
+                    <GoogleSignIn  />
 
                     <div className="info">Don't have an account? <NavLink to="/signup">Signup</NavLink> instead.</div>
 

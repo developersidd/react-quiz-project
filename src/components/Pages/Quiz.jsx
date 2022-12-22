@@ -1,4 +1,4 @@
-import { getDatabase, query, ref, set } from 'firebase/database';
+import { getDatabase, ref, set } from 'firebase/database';
 import _ from 'lodash';
 import React, { useEffect, useReducer, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -38,7 +38,9 @@ const Quiz = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const navigate = useNavigate();
     const location = useLocation();
-    const { title } = location.state;
+    const state = location.state;
+    const title = state?.title;
+    
     const [qna, dispatch] = useReducer(reducer, initialState);
 
     // this useEffect is used to create a copy of my questions array as if i could add default falsy value to each question option cqz i will go through controlled form.
@@ -46,6 +48,7 @@ const Quiz = () => {
         dispatch({ type: "questions", value: questions });
     }, [questions]);
 
+    
     // handle user selection of quiz answers
     const handleInputChange = (e, index) => {
         dispatch({ type: "answer", value: e.target.checked, questionNumber: currentQuestion, optionIndex: index })
@@ -88,7 +91,7 @@ const Quiz = () => {
             {loading && <div> ...Loading </div>}
             {error && <div> There was an Error! </div>}
             <SetPageTitle title="Quiz" />
-            {
+            { 
                 !loading && !error && qna && qna.length > 0 && (
                     <>
                         <h1>{qna[currentQuestion].title} </h1>
@@ -105,10 +108,10 @@ const Quiz = () => {
                             next={handleNextButton}
                             percentage={percentage}
                             submit={submitQuiz}
-                            videoTitle={title}
                         />
+    
+                        <MiniPlayer title={title} videoID={videoID} />
 
-                        <MiniPlayer videoID={videoID} />
                     </>
                 )
             }

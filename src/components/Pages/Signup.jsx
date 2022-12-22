@@ -19,6 +19,8 @@ const Signup = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  location.state?.from?.state?.title && localStorage.setItem("video_title", JSON.stringify(location.state?.from?.state?.title));
+  
   const redirect_url = location.state?.from?.pathname;
   redirect_url && localStorage.setItem("redirect_url", JSON.stringify(redirect_url));
   // destructure user data
@@ -56,7 +58,7 @@ const Signup = () => {
     } catch (err) {
       setLoading(false)
       setFirebaseError(err.message);
-    } 
+    }
   }
 
 
@@ -81,11 +83,11 @@ const Signup = () => {
           {/* show error */}
           {firebaseError && <p className='error'> {firebaseError} </p>}
           {/* sign up with Google */}
-          <p style={{textAlign: "center", paddingTop: "25px", fontWeight: "bold", fontSize: "13px"}}>Or Sign up with </p>
+          <p style={{ textAlign: "center", paddingTop: "25px", fontWeight: "bold", fontSize: "13px" }}>Or Sign up with </p>
           <GoogleSignIn />
-          
+
           <div className="info">
-            Already have an account? <NavLink to="/login">Login</NavLink> instead.
+            Already have an account? <NavLink to="/login" >Login</NavLink> instead.
           </div>
 
         </Form>
