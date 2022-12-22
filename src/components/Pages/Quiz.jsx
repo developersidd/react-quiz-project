@@ -1,7 +1,7 @@
 import { getDatabase, query, ref, set } from 'firebase/database';
 import _ from 'lodash';
 import React, { useEffect, useReducer, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 import useQuestions from '../../Hooks/useQuestion';
 import Answers from '../Answers';
@@ -37,6 +37,8 @@ const Quiz = () => {
     const { questions, loading, error } = useQuestions(videoID);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const navigate = useNavigate();
+    const location = useLocation();
+    const { title } = location.state;
     const [qna, dispatch] = useReducer(reducer, initialState);
 
     // this useEffect is used to create a copy of my questions array as if i could add default falsy value to each question option cqz i will go through controlled form.
@@ -103,6 +105,7 @@ const Quiz = () => {
                             next={handleNextButton}
                             percentage={percentage}
                             submit={submitQuiz}
+                            videoTitle={title}
                         />
 
                         <MiniPlayer videoID={videoID} />
