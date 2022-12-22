@@ -1,12 +1,17 @@
 import { initializeApp } from "firebase/app";
 
-const app = initializeApp({
+const firebaseConfig = {
     apiKey: process.env.REACT_APP_APIKEY,
     authDomain: process.env.REACT_APP_AUTHDOMAIN,
     projectId: process.env.REACT_APP_PROJECTID,
     storageBucket: process.env.REACT_APP_STORAGEBUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
-    appId: process.env.REACT_APP_APPID
-});
+    appId: process.env.REACT_APP_APPID,
+    databaseURL: process.env.REACT_APP_DATABASE_URL,
+};
 
-export default app;
+const firebaseInit = () => {
+    return initializeApp(firebaseConfig);
+}
+
+export default firebaseInit;

@@ -10,6 +10,10 @@
   padding: 2px;
 }
 
+.textInput:not(:last-child){
+  margin-bottom: 15px ;
+}
+
 .textInput input {
   border: none;
   outline: none;

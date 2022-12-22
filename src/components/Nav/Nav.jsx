@@ -3,7 +3,11 @@ import classes from "../../styles/Nav.module.css";
 import Account from './Account';
 import logo from "../../assets/images/logo-bg.png";
 import { NavLink } from 'react-router-dom';
+import useAuth from '../../Hooks/useAuth';
 const Nav = () => {
+
+    const { firebaseAuth: { user } } = useAuth();
+
     return (
         <nav className={classes.nav}>
             <ul>

@@ -1,61 +1,80 @@
 import { createUserWithEmailAndPassword, getAuth, getIdToken, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { useEffect, useState } from 'react';
-import initFirebase from '../firebase';
+import firebaseInit from "../firebase";
 
-initFirebase();
+firebaseInit();
 
 const useFirebase = () => {
 
     // firebase data
     const [user, setUser] = useState({});
     const [firebaseError, setFirebaseError] = useState("");
+    const [redirectUrl, setRedirectUrl] = useState("");
     const [loading, setLoading] = useState(true);
 
-    // lest's Destructure signup or login data 
-    const [userName, setUserName] = useState("");
-    const [userEmail, setUserEmail] = useState("");
-    const [userPassword, setUserPassword] = useState("");
-
-    // firebase settings
+    // firebase settings 
     const googleProvider = new GoogleAuthProvider();
     const auth = getAuth();
 
 
-    const registerUser = async () => {
-        const user = await createUserWithEmailAndPassword(auth, userEmail, userPassword);
-        updateProfile(auth.currentUser, {
-            displayName: userName,
+    //register user
+    const registerUser = async (name, email, password) => {
+        setLoading(true);
+        await createUserWithEmailAndPassword(auth, email, password);
+
+        // update profile
+        await updateProfile(auth.currentUser, {
+            displayName: name,
         });
 
-        return user;
+        const user = auth.currentUser;
+        setUser({
+            ...user,
+        });
+        setLoading(false);
     }
 
-    const loginUser = (e) => {
+    // login user
+    const loginUser = async (email, password) => {
         setLoading(true);
-        e.preventDefault();
-        return signInWithEmailAndPassword(auth, userEmail, userPassword)
+        await signInWithEmailAndPassword(auth, email, password);
+        const user = auth.currentUser;
+        setUser({
+            ...user,
+        });
+        setLoading(false);
     }
 
     // Google sign in 
-    const googleSignIn = () => {
+    const googleSignIn = async () => {
         setLoading(true);
-        return signInWithPopup(auth, googleProvider)
-    }
+        await signInWithPopup(auth, googleProvider);
+        const user = auth.currentUser;
+        setUser({
+            ...user,
+        });
+        setLoading(false);
+    };
 
     const logOut = () => {
         setLoading(true);
         signOut(auth)
             .then(res => {
                 setUser({});
-            })
-            .finally(() => {
+                localStorage.removeItem("idToken")
                 setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                setFirebaseError(err.message);
             });
     }
 
     // user observer
     useEffect(() => {
+        const auth = getAuth();
         const subscribe = onAuthStateChanged(auth, (user) => {
+            setLoading(true);
             if (user) {
                 getIdToken(user)
                     .then(idToken => localStorage.setItem("idToken", idToken));
@@ -66,11 +85,10 @@ const useFirebase = () => {
             setLoading(false)
         });
 
-        return () => subscribe;
+        return subscribe;
+    }, []);
 
-    }, [auth]);
-
-    return { googleSignIn, registerUser, firebaseError, setUserEmail, setUserName, setUserPassword, user, logOut, loginUser, setFirebaseError, setUser, setLoading, loading, updateUser };
+    return { googleSignIn, registerUser, firebaseError, setFirebaseError, user, logOut, loginUser, loading, setLoading };
 }
 
 export default useFirebase;

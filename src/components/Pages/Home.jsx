@@ -1,11 +1,15 @@
 import React from 'react';
-import useAuth from '../../Hooks/useAuth';
+import SetPageTitle from '../SetPageTitle';
 import Videos from '../Videos';
 
 const Home = () => {
-  const {name} = useAuth();
 
-  return <Videos />
+  return (
+    <div>
+      <SetPageTitle title="Home" />
+      <Videos />
+    </div>
+  )
 }
 
 export default Home;

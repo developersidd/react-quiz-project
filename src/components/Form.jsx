@@ -4,7 +4,7 @@ import classes from "../styles/Form.module.css";
 
 const Form = ({ children, className, ...rest }) => {
     return (
-        <form className={`${className} ${classes.form}`}>
+        <form {...rest} className={`${className} ${classes.form}`}>
             {children}
         </form>
     )

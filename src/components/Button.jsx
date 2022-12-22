@@ -1,11 +1,11 @@
 import React from 'react';
 import classes from "../styles/Button.module.css";
 
-const Button = ({ className, children }) => {
+const Button = ({ className, children, onClick, ...rest }) => {
     return (
-        <div className={`${classes.button} ${className}`}>
+        <button onClick={() => onClick()} className={`${classes.button} ${className}`} {...rest}>
             {children}
-        </div>)
+        </button>)
 }
 
 export default Button;
